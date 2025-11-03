@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis de Campaña: Alertas Medallia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Chosen Palette: Corporate Blue (#01306C) and Gold/Amber (#FBC104) from the Afore Coppel logo. --><style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb; 
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 350px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+                max-height: 400px;
+            }
+        }
+        /* Colores primarios basados en el logo: Azul corporativo y Amarillo */
+        .tab-btn.active {
+            background-color: #01306C; /* Azul oscuro del logo */
+            color: white;
+            border-color: #01306C;
+        }
+        .tab-btn {
+            background-color: white;
+            color: #374151;
+            border-color: #d1d5db;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        /* Nuevas clases de colores de Tailwind si fueran necesarias */
+        .text-afore-blue { color: #01306C; }
+        .bg-afore-blue { background-color: #01306C; }
+        .border-afore-blue { border-color: #01306C; }
+        
+        .text-afore-yellow { color: #FBC104; }
+        .bg-afore-yellow { background-color: #FBC104; }
+        .border-afore-yellow { border-color: #FBC104; }
+
+        .text-afore-blue-light { color: #1a4e8d; } /* Un tono más claro para textos */
+        .bg-afore-blue-light { background-color: #e6eaf0; } /* Fondo claro para tarjetas relacionadas */
+        .border-afore-blue-light { border-color: #ccd7e6; }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-7xl">
+        
+        <!-- Logo insertado aquí --><div class="flex justify-center mb-6">
+            <img src="logo.png" alt="Logo de la Campaña" class="max-h-16 w-auto rounded-lg">
+        </div>
+        <!-- Fin del Logo --><header class="mb-8">
+            <!-- Título actualizado a color Azul Corporativo --><h1 class="text-3xl font-bold text-afore-blue">Análisis Interactivo: Campaña "Alertas Medallia"</h1>
+            <p class="text-lg text-gray-600 mt-2">Dashboard ejecutivo sobre la eficiencia de contactación y plan de acción.</p>
+        </header>
+
+        <nav class="flex flex-wrap gap-2 mb-8" aria-label="Navegación Principal">
+            <button class="tab-btn active text-sm md:text-base font-medium py-2 px-4 rounded-lg shadow-sm border transition-colors duration-200" data-tab="resumen">
+                Resumen de KPIs
+            </button>
+            <button class="tab-btn text-sm md:text-base font-medium py-2 px-4 rounded-lg shadow-sm border transition-colors duration-200" data-tab="diagnostico">
+                Diagnóstico y Cuellos de Botella
+            </button>
+            <button class="tab-btn text-sm md:text-base font-medium py-2 px-4 rounded-lg shadow-sm border transition-colors duration-200" data-tab="plan">
+                Plan de Acción
+            </button>
+        </nav>
+
+        <main>
+            <section id="resumen" class="tab-content active">
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 mb-8">
+                    <div class="bg-white p-5 rounded-lg shadow-md border border-gray-200">
+                        <h3 class="text-sm font-medium text-gray-500">Base Única (NSS)</h3>
+                        <!-- Valor actualizado a color Azul Corporativo --><p class="text-3xl font-semibold text-afore-blue">270</p>
+                    </div>
+                    <div class="bg-white p-5 rounded-lg shadow-md border border-gray-200">
+                        <h3 class="text-sm font-medium text-gray-500">Esfuerzo (Llamadas)</h3>
+                        <p class="text-3xl font-semibold text-gray-800">552</p>
+                    </div>
+                    <div class="bg-white p-5 rounded-lg shadow-md border border-gray-200">
+                        <h3 class="text-sm font-medium text-gray-500">Promedio Llamadas / NSS</h3>
+                        <p class="text-3xl font-semibold text-gray-800">2.04</p>
+                    </div>
+                    <div class="bg-white p-5 rounded-lg shadow-md border border-red-200 bg-red-50">
+                        <h3 class="text-sm font-medium text-red-600">Total Contactos</h3>
+                        <p class="text-3xl font-semibold text-red-700">34</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
+                        <h2 class="text-xl font-semibold text-center mb-4">Problema Principal: Tasa de Contacto</h2>
+                        <div class="chart-container">
+                            <canvas id="contactRateChart"></canvas>
+                        </div>
+                        <p class="text-center text-gray-600 mt-4">Solo el **6.16%** de las llamadas resultaron en un contacto. El 93.84% fue esfuerzo sin conexión.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
+                        <h2 class="text-xl font-semibold text-center mb-4">Fortaleza: Tasa de Éxito (s/Contacto)</h2>
+                        <div class="chart-container">
+                            <canvas id="successRateChart"></canvas>
+                        </div>
+                        <p class="text-center text-gray-600 mt-4">Casi la mitad (**47.06%**) de los clientes contactados completaron la encuesta exitosamente.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="diagnostico" class="tab-content">
+                <p class="text-gray-700 mb-6 text-base md:text-lg">Aquí analizamos *por qué* la Tasa de Contacto es tan baja y qué sucede cuando un cliente sí contesta. El diagnóstico es claro: el problema no es el agente, es la marcación y el enganche inicial.</p>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
+                        <h2 class="text-xl font-semibold text-center mb-4">Desglose del Esfuerzo Total (552 Llamadas)</h2>
+                        <div class="chart-container" style="height: 350px; max-height: 400px;">
+                            <canvas id="outcomesBarChart"></canvas>
+                        </div>
+                        <p class="text-center text-gray-600 mt-4">El **87.41%** de la base (236 clientes) nunca fue contactada ("No Contesto").</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
+                        <h2 class="text-xl font-semibold text-center mb-4">Desglose de los Contactos (34 Llamadas)</h2>
+                        <div class="chart-container" style="height: 350px; max-height: 400px;">
+                            <canvas id="contactBreakdownPieChart"></canvas>
+                        </div>
+                        <p class="text-center text-gray-600 mt-4">El "Cuello de Botella Secundario": **"Colgó/Abandono"** es la principal razón de falla *después* de contestar.</p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200 mt-8">
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Análisis de Segmentación de Clientes</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h3 class="text-lg font-semibold text-green-700">Mayor Tasa de Éxito</h3>
+                            <p class="text-gray-600">Quejas de bajo impacto, como **Modificación de Datos** o **Alta de Expediente**. El cliente tiene menor molestia y está más dispuesto a colaborar en una encuesta.</p>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-red-700">Mayor Tasa de Falla</h3>
+                            <p class="text-gray-600">Quejas de alto impacto, como **Retiro por Desempleo** o **Problemas No Resueltos**. El cliente está frustrado y rechaza llamadas desconocidas o cuelga rápido.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="plan" class="tab-content">
+                <p class="text-gray-700 mb-6 text-base md:text-lg">Basado en el diagnóstico, el plan de acción se enfoca en dos prioridades: mejorar la eficiencia de la marcación (para subir el 6.16%) y mejorar el diálogo de apertura (para reducir el abandono).</p>
+
+                <div class="space-y-8">
+                    <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
+                        <!-- Título actualizado a color Azul Corporativo --><h2 class="text-2xl font-semibold text-afore-blue mb-4">Prioridad 1: Maximizar la Contactación</h2>
+                        <p class="text-gray-600 mb-6">Acción: Aumentar el esfuerzo de marcación y concentrarlo en horarios de alta disponibilidad (Prime Time).</p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <!-- Tarjeta actualizada a color Azul claro/suave --><div class="border border-afore-blue-light bg-afore-blue-light p-4 rounded-lg">
+                                <h3 class="font-semibold text-afore-blue">Horario 17:00 a 20:00 hrs</h3>
+                                <p class="text-afore-blue-light text-sm">Concentrar >60% de la marcación. Es el *prime time* del cliente trabajador.</p>
+                            </div>
+                            <!-- Tarjeta actualizada a color Amarillo claro/suave --><div class="border border-afore-yellow bg-afore-yellow p-4 rounded-lg">
+                                <h3 class="font-semibold text-afore-blue">Horario 12:00 a 15:00 hrs</h3>
+                                <p class="text-afore-blue text-sm">Mantener esfuerzo constante. Segunda mejor franja de contactabilidad (horario de comida).</p>
+                            </div>
+                            <div class="border border-gray-300 bg-gray-100 p-4 rounded-lg">
+                                <h3 class="font-semibold text-gray-800">Aumento de Intentos</h3>
+                                <p class="text-gray-700 text-sm">Incrementar de 2.04 a **4-5 llamadas por NSS** para agotar la base.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
+                        <!-- Título actualizado a color Azul Corporativo --><h2 class="text-2xl font-semibold text-afore-blue mb-4">Prioridad 2: Mejorar la Retención en el Diálogo (Enganche)</h2>
+                        <p class="text-gray-600 mb-6">Acción: Personalizar el *script* de apertura para posicionar la llamada como un "seguimiento de solución", no una encuesta genérica.</p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="border-2 border-red-300 p-4 rounded-lg bg-red-50 relative">
+                                <span class="absolute -top-3 -left-3 transform rotate-[-15deg] bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">ANTES (Genérico)</span>
+                                <h3 class="font-semibold text-red-800 mt-4">Diálogo Actual</h3>
+                                <p class="text-red-700 italic mt-2">"El motivo de mi llamada es para ofrecerle una sincera disculpa por los inconvenientes técnicos que se presentaron..."</p>
+                                <p class="text-red-600 text-sm mt-3"><strong>Resultado:</strong> El cliente lo percibe como encuesta y cuelga.</p>
+                            </div>
+                            <div class="border-2 border-green-300 p-4 rounded-lg bg-green-50 relative">
+                                <!-- Etiqueta actualizada a color Amarillo del logo --><span class="absolute -top-3 -left-3 transform rotate-[-15deg] bg-afore-yellow text-afore-blue text-xs font-bold px-2 py-1 rounded">RECOMENDADO</span>
+                                <h3 class="font-semibold text-green-800 mt-4">Diálogo Personalizado</h3>
+                                <p class="text-green-700 italic mt-2">"Le llamo de Afore Coppel para darle seguimiento personal a su caso. Entiendo que tuvo un problema con **[Mencionar queja: ej. su Retiro por Desempleo]**."</p>
+                                <p class="text-green-600 text-sm mt-3"><strong>Resultado:</strong> Valida el problema específico y capta la atención.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabs = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const target = tab.getAttribute('data-tab');
+
+                    // FIX: Iterar sobre todas las pestañas para asegurar que solo la clickeada quede activa.
+                    tabs.forEach(t => {
+                        // 1. Quitar el estado activo de todas las pestañas
+                        t.classList.remove('active');
+                        // No es necesario añadir o remover clases de Tailwind ya que el CSS .tab-btn maneja el estado inactivo.
+                    });
+
+                    // 2. Aplicar el estado activo a la pestaña clickeada
+                    tab.classList.add('active'); 
+
+                    // 3. Mostrar el contenido correspondiente
+                    tabContents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.id === target) {
+                            content.classList.add('active');
+                        }
+                    });
+                });
+            });
+
+            // Asegurar que la pestaña activa tenga los estilos correctos al cargar
+            // Este bloque se mantiene para asegurar el estado inicial correcto.
+            const activeTab = document.querySelector('.tab-btn.active');
+            if (activeTab) {
+                // Se eliminan las líneas que manejaban clases Tailwind redundantes
+                activeTab.classList.add('active');
+            }
+
+
+            renderCharts();
+        });
+
+        function renderCharts() {
+            Chart.defaults.font.family = "'Inter', sans-serif";
+            Chart.defaults.font.weight = "500";
+
+            // Definición de colores del logo
+            const aforeBlue = '#01306C';
+            const aforeYellow = '#FBC104';
+            const successGreen = '#10B981'; // Un verde estándar para éxito
+            const dangerRed = '#EF4444'; // Un rojo estándar para peligro
+
+            const contactRateCtx = document.getElementById('contactRateChart')?.getContext('2d');
+            if (contactRateCtx) {
+                new Chart(contactRateCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Contacto (34)', 'Sin Contacto (518)'],
+                        datasets: [{
+                            data: [6.16, 93.84],
+                            backgroundColor: [aforeBlue, '#e6eaf0'], // Azul del logo para Contacto, un gris claro para No Contacto
+                            borderColor: ['#ffffff', '#ffffff'],
+                            borderWidth: 3
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        cutout: '70%',
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `${context.label}: ${context.raw.toFixed(2)}%`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            const successRateCtx = document.getElementById('successRateChart')?.getContext('2d');
+            if (successRateCtx) {
+                new Chart(successRateCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Éxito (16)', 'Contacto Fallido (18)'],
+                        datasets: [{
+                            data: [47.06, 52.94],
+                            backgroundColor: [successGreen, dangerRed], // Verde para éxito, rojo para fallo
+                            borderColor: ['#ffffff', '#ffffff'],
+                            borderWidth: 3
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        cutout: '70%',
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `${context.label}: ${context.raw.toFixed(2)}%`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            const outcomesBarCtx = document.getElementById('outcomesBarChart')?.getContext('2d');
+            if (outcomesBarCtx) {
+                new Chart(outcomesBarCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Total (552)'],
+                        datasets: [
+                            {
+                                label: 'No Contesto (236 clientes)',
+                                data: [87.41],
+                                backgroundColor: dangerRed,
+                                barPercentage: 0.6,
+                                categoryPercentage: 0.7
+                            },
+                            {
+                                label: 'Contacto (34 clientes)',
+                                data: [6.16],
+                                backgroundColor: aforeBlue, // Azul del logo para Contacto
+                                barPercentage: 0.6,
+                                categoryPercentage: 0.7
+                            }
+                        ]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                stacked: true,
+                                max: 100,
+                                ticks: {
+                                    callback: (value) => value + '%'
+                                }
+                            },
+                            y: {
+                                stacked: true,
+                                grid: {
+                                    display: false
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: (context) => `${context.dataset.label}: ${context.raw.toFixed(2)}% de la base`
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            const contactBreakdownPieCtx = document.getElementById('contactBreakdownPieChart')?.getContext('2d');
+            if (contactBreakdownPieCtx) {
+                new Chart(contactBreakdownPieCtx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Encuesta Efectiva (16)', 'Colgó/Abandono (9)', 'Llamar Después (4)', 'No Interesa (2)', 'Num. Equivocado (2)', 'Otro (1)'],
+                        datasets: [{
+                            label: 'Desglose de 34 Contactos',
+                            data: [16, 9, 4, 2, 2, 1],
+                            backgroundColor: [
+                                successGreen,     /* Éxito: Verde */
+                                dangerRed,        /* Colgó/Abandono: Rojo */
+                                aforeYellow,      /* Llamar Después: Amarillo del logo */
+                                '#f97316',        /* No Interesa: Naranja */
+                                aforeBlue,        /* Num. Equivocado: Azul del logo */
+                                '#6b7280'         /* Otro: Gris */
+                            ],
+                            borderColor: '#ffffff',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    padding: 15
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: (context) => `${context.label}: ${context.raw} casos`
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>
