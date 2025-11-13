@@ -62,28 +62,33 @@
 
     <div class="container mx-auto p-4 md:p-8 max-w-7xl">
         
-        <!-- Logo insertado aquí --><div class="flex justify-center mb-6">
-            <img src="logo.png" alt="Logo de la Campaña" class="max-h-16 w-auto rounded-lg">
+        <!-- Logo cargado desde el archivo local 'logo.png' --><div class="flex justify-center mb-6">
+            <img src="logo.png" alt="Logo de Afore Coppel" class="max-h-16 w-auto">
         </div>
-        <!-- Fin del Logo --><header class="mb-8">
-            <!-- Título actualizado a color Azul Corporativo --><h1 class="text-3xl font-bold text-afore-blue">Análisis Interactivo: Campaña "Alertas Medallia"</h1>
+        <!-- Fin del Logo --><header class="mb-8 text-center">
+            <!-- Título principal de la campaña --><h1 class="text-3xl font-bold text-gray-800">Análisis Interactivo: Campaña "Alertas Medallia"</h1>
             <p class="text-lg text-gray-600 mt-2">Dashboard ejecutivo sobre la eficiencia de contactación y plan de acción.</p>
         </header>
 
-        <nav class="flex flex-wrap gap-2 mb-8" aria-label="Navegación Principal">
-            <button class="tab-btn active text-sm md:text-base font-medium py-2 px-4 rounded-lg shadow-sm border transition-colors duration-200" data-tab="resumen">
+        <nav class="flex flex-wrap gap-2 mb-8 justify-center" aria-label="Navegación Principal">
+            <button class="tab-btn text-sm md:text-base font-medium py-2 px-4 rounded-lg shadow-sm border transition-colors duration-200" data-tab="resumen">
                 Resumen de KPIs
             </button>
-            <button class="tab-btn text-sm md:text-base font-medium py-2 px-4 rounded-lg shadow-sm border transition-colors duration-200" data-tab="diagnostico">
-                Diagnóstico y Cuellos de Botella
+            <button class="tab-btn text-sm md:text-base font-medium py-2 px-4 rounded-lg shadow-sm border transition-colors duration-200" data-tab="analisis">
+                Análisis de contactación
             </button>
+            <!-- PESTAÑA: Casos CRM - Establecida como ACTIVA por defecto -->
+            <button class="tab-btn active text-sm md:text-base font-medium py-2 px-4 rounded-lg shadow-sm border transition-colors duration-200" data-tab="crm_cases">
+                Casos CRM (GAP)
+            </button>
+            <!-- FIN NUEVA PESTAÑA -->
             <button class="tab-btn text-sm md:text-base font-medium py-2 px-4 rounded-lg shadow-sm border transition-colors duration-200" data-tab="plan">
                 Plan de Acción
             </button>
         </nav>
 
         <main>
-            <section id="resumen" class="tab-content active">
+            <section id="resumen" class="tab-content">
                 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 mb-8">
                     <div class="bg-white p-5 rounded-lg shadow-md border border-gray-200">
@@ -106,24 +111,24 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                     <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
-                        <h2 class="text-xl font-semibold text-center mb-4">Problema Principal: Tasa de Contacto</h2>
+                        <h2 class="text-xl font-semibold text-center mb-4">Tasa de Contacto</h2>
                         <div class="chart-container">
                             <canvas id="contactRateChart"></canvas>
                         </div>
-                        <p class="text-center text-gray-600 mt-4">Solo el **6.16%** de las llamadas resultaron en un contacto. El 93.84% fue esfuerzo sin conexión.</p>
+                        <p class="text-center text-gray-600 mt-4">Solo el <strong>6.16%</strong> de las llamadas resultaron en un contacto. El 93.84% fue esfuerzo sin conexión.</p>
                     </div>
                     <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
-                        <h2 class="text-xl font-semibold text-center mb-4">Fortaleza: Tasa de Éxito (s/Contacto)</h2>
+                        <h2 class="text-xl font-semibold text-center mb-4">Fortaleza: Tasa de Éxito</h2>
                         <div class="chart-container">
                             <canvas id="successRateChart"></canvas>
                         </div>
-                        <p class="text-center text-gray-600 mt-4">Casi la mitad (**47.06%**) de los clientes contactados completaron la encuesta exitosamente.</p>
+                        <p class="text-center text-gray-600 mt-4">Casi la mitad <strong>47.06%</strong> de los clientes contactados completaron la encuesta exitosamente.</p>
                     </div>
                 </div>
             </section>
 
-            <section id="diagnostico" class="tab-content">
-                <p class="text-gray-700 mb-6 text-base md:text-lg">Aquí analizamos *por qué* la Tasa de Contacto es tan baja y qué sucede cuando un cliente sí contesta. El diagnóstico es claro: el problema no es el agente, es la marcación y el enganche inicial.</p>
+            <section id="analisis" class="tab-content">
+                <p class="text-gray-700 mb-6 text-base md:text-lg">Aquí analizamos <strong>por qué</strong> la Tasa de Contacto es tan baja y qué sucede cuando un cliente sí contesta. El diagnóstico es claro: el problema no es el agente, es la marcación y el <strong>saludo inicial en la llamada</strong>.</p>
                 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
                     <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
@@ -131,31 +136,64 @@
                         <div class="chart-container" style="height: 350px; max-height: 400px;">
                             <canvas id="outcomesBarChart"></canvas>
                         </div>
-                        <p class="text-center text-gray-600 mt-4">El **87.41%** de la base (236 clientes) nunca fue contactada ("No Contesto").</p>
+                        <p class="text-center text-gray-600 mt-4">El <strong>87.41%</strong> de la base (236 clientes) nunca fue contactada ("No Contesto").</p>
                     </div>
                     <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
                         <h2 class="text-xl font-semibold text-center mb-4">Desglose de los Contactos (34 Llamadas)</h2>
                         <div class="chart-container" style="height: 350px; max-height: 400px;">
                             <canvas id="contactBreakdownPieChart"></canvas>
                         </div>
-                        <p class="text-center text-gray-600 mt-4">El "Cuello de Botella Secundario": **"Colgó/Abandono"** es la principal razón de falla *después* de contestar.</p>
+                        <p class="text-center text-gray-600 mt-4 font-medium">El segundo motivo: "Colgó/Abandono" es la principal razón de falla después de contestar.</p>
                     </div>
                 </div>
 
                 <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200 mt-8">
-                    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Análisis de Segmentación de Clientes</h2>
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Análisis de hallazgos de trámites</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <h3 class="text-lg font-semibold text-green-700">Mayor Tasa de Éxito</h3>
-                            <p class="text-gray-600">Quejas de bajo impacto, como **Modificación de Datos** o **Alta de Expediente**. El cliente tiene menor molestia y está más dispuesto a colaborar en una encuesta.</p>
+                            <h3 class="text-lg font-semibold text-green-700">Mayor Tasa de Éxito <span class="text-green-500 font-normal">(67% de éxito)</span></h3>
+                            <p class="text-gray-600">Quejas de bajo impacto, como <strong>Modificación de Datos</strong> o <strong>Alta de Expediente</strong> (trámites administrativos). El cliente tiene menor molestia y está más dispuesto a colaborar en una llamada.</p>
                         </div>
                         <div>
-                            <h3 class="text-lg font-semibold text-red-700">Mayor Tasa de Falla</h3>
-                            <p class="text-gray-600">Quejas de alto impacto, como **Retiro por Desempleo** o **Problemas No Resueltos**. El cliente está frustrado y rechaza llamadas desconocidas o cuelga rápido.</p>
+                            <h3 class="text-lg font-semibold text-red-700">Mayor Tasa de Falla <span class="text-red-500 font-normal">(80% de falla)</span></h3>
+                            <p class="text-gray-600">Quejas de alto impacto, como <strong>Retiro por Desempleo</strong> o <strong>Problemas No Resueltos</strong>. El cliente está frustrado y rechaza llamadas desconocidas o cuelga rápido.</p>
                         </div>
                     </div>
                 </div>
             </section>
+            
+            <!-- SECCIÓN: CASOS CRM (GAP) - GRÁFICO ACTUALIZADO A CAUSA RAÍZ -->
+            <section id="crm_cases" class="tab-content active">
+                <p class="text-gray-700 mb-6 text-base md:text-lg">Este análisis detalla la distribución de las 8 quejas escaladas como casos CRM de segundo nivel (GAP), clasificadas por la <strong>Causa Raíz</strong> identificada en la descripción de cada reporte. La mayoría son fallas operativas o logísticas.</p>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-8">
+                    <div class="bg-white p-5 rounded-lg shadow-md border border-gray-200">
+                        <h3 class="text-sm font-medium text-gray-500">Encuestas Efectivas (Oportunidad)</h3>
+                        <p class="text-3xl font-semibold text-gray-800">16</p>
+                    </div>
+                    <!-- Tarjeta con color primario: Azul Corporativo -->
+                    <div class="bg-afore-blue p-5 rounded-lg shadow-md border border-afore-blue text-white">
+                        <h3 class="text-sm font-medium text-afore-yellow">Total Casos CRM (GAP)</h3>
+                        <p class="text-3xl font-semibold">8</p>
+                    </div>
+                    <!-- Tarjeta de Tasa de Escalación: Verde de Éxito -->
+                    <div class="bg-white p-5 rounded-lg shadow-md border border-green-200 bg-green-50">
+                        <h3 class="text-sm font-medium text-green-600">Tasa de Escalación CRM</h3>
+                        <p class="text-3xl font-semibold text-green-700">50.00%</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 gap-6 md:gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
+                        <h2 class="text-xl font-semibold text-center mb-4">Clasificación de 8 Casos CRM por Causa Raíz (Descripción)</h2>
+                        <div class="chart-container" style="height: 350px; max-height: 400px;">
+                            <canvas id="crmCaseDescriptionChart"></canvas>
+                        </div>
+                        <p class="text-center text-gray-600 mt-4 font-medium">El <strong>75%</strong> de los casos (6/8) se relacionan con <strong>problemas operacionales directos</strong> (tiempos de espera, depósitos no acreditados o fallas en el proceso de Retiro). Solo 2 casos fueron de atención deficiente.</p>
+                    </div>
+                </div>
+            </section>
+            <!-- FIN SECCIÓN CRM -->
 
             <section id="plan" class="tab-content">
                 <p class="text-gray-700 mb-6 text-base md:text-lg">Basado en el diagnóstico, el plan de acción se enfoca en dos prioridades: mejorar la eficiencia de la marcación (para subir el 6.16%) y mejorar el diálogo de apertura (para reducir el abandono).</p>
@@ -165,25 +203,25 @@
                         <!-- Título actualizado a color Azul Corporativo --><h2 class="text-2xl font-semibold text-afore-blue mb-4">Prioridad 1: Maximizar la Contactación</h2>
                         <p class="text-gray-600 mb-6">Acción: Aumentar el esfuerzo de marcación y concentrarlo en horarios de alta disponibilidad (Prime Time).</p>
                         
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <!-- MODIFICADO: Se eliminó grid-cols-3 y la tarjeta de en medio (Horario 12-15) -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <!-- Tarjeta actualizada a color Azul claro/suave --><div class="border border-afore-blue-light bg-afore-blue-light p-4 rounded-lg">
                                 <h3 class="font-semibold text-afore-blue">Horario 17:00 a 20:00 hrs</h3>
-                                <p class="text-afore-blue-light text-sm">Concentrar >60% de la marcación. Es el *prime time* del cliente trabajador.</p>
+                                <p class="text-afore-blue-light text-sm">Concentrar >60% de la marcación. Es el <strong>prime time</strong> del cliente trabajador.</p>
                             </div>
-                            <!-- Tarjeta actualizada a color Amarillo claro/suave --><div class="border border-afore-yellow bg-afore-yellow p-4 rounded-lg">
-                                <h3 class="font-semibold text-afore-blue">Horario 12:00 a 15:00 hrs</h3>
-                                <p class="text-afore-blue text-sm">Mantener esfuerzo constante. Segunda mejor franja de contactabilidad (horario de comida).</p>
-                            </div>
+                            
+                            <!-- Tarjeta Gris (Aumento de Intentos) -->
                             <div class="border border-gray-300 bg-gray-100 p-4 rounded-lg">
                                 <h3 class="font-semibold text-gray-800">Aumento de Intentos</h3>
-                                <p class="text-gray-700 text-sm">Incrementar de 2.04 a **4-5 llamadas por NSS** para agotar la base.</p>
+                                <p class="text-3xl font-semibold text-gray-800">4-5</p>
+                                <p class="text-gray-700 text-sm">Incrementar de 2.04 a <strong>4-5 llamadas por NSS</strong> para agotar la base.</p>
                             </div>
                         </div>
                     </div>
 
                     <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
                         <!-- Título actualizado a color Azul Corporativo --><h2 class="text-2xl font-semibold text-afore-blue mb-4">Prioridad 2: Mejorar la Retención en el Diálogo (Enganche)</h2>
-                        <p class="text-gray-600 mb-6">Acción: Personalizar el *script* de apertura para posicionar la llamada como un "seguimiento de solución", no una encuesta genérica.</p>
+                        <p class="text-gray-600 mb-6">Acción: Personalizar el <strong>script</strong> de apertura para posicionar la llamada como un "seguimiento de solución", no una encuesta genérica.</p>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="border-2 border-red-300 p-4 rounded-lg bg-red-50 relative">
@@ -195,7 +233,7 @@
                             <div class="border-2 border-green-300 p-4 rounded-lg bg-green-50 relative">
                                 <!-- Etiqueta actualizada a color Amarillo del logo --><span class="absolute -top-3 -left-3 transform rotate-[-15deg] bg-afore-yellow text-afore-blue text-xs font-bold px-2 py-1 rounded">RECOMENDADO</span>
                                 <h3 class="font-semibold text-green-800 mt-4">Diálogo Personalizado</h3>
-                                <p class="text-green-700 italic mt-2">"Le llamo de Afore Coppel para darle seguimiento personal a su caso. Entiendo que tuvo un problema con **[Mencionar queja: ej. su Retiro por Desempleo]**."</p>
+                                <p class="text-green-700 italic mt-2">"Le llamo de Afore Coppel para darle seguimiento personal a su caso. Entiendo que tuvo un problema con [Mencionar queja: ej. su Retiro por Desempleo]."</p>
                                 <p class="text-green-600 text-sm mt-3"><strong>Resultado:</strong> Valida el problema específico y capta la atención.</p>
                             </div>
                         </div>
@@ -210,39 +248,40 @@
             const tabs = document.querySelectorAll('.tab-btn');
             const tabContents = document.querySelectorAll('.tab-content');
 
+            // Función para activar una pestaña
+            function setActiveTab(target) {
+                // 1. Quitar el estado activo de todas las pestañas
+                tabs.forEach(t => {
+                    t.classList.remove('active');
+                });
+
+                // 2. Aplicar el estado activo al botón de la pestaña
+                const targetButton = document.querySelector(`.tab-btn[data-tab="${target}"]`);
+                if (targetButton) {
+                    targetButton.classList.add('active'); 
+                }
+
+                // 3. Mostrar el contenido correspondiente
+                tabContents.forEach(content => {
+                    content.classList.remove('active');
+                    if (content.id === target) {
+                        content.classList.add('active');
+                    }
+                });
+            }
+
+            // Manejador de eventos para clicks en pestañas
             tabs.forEach(tab => {
                 tab.addEventListener('click', () => {
                     const target = tab.getAttribute('data-tab');
-
-                    // FIX: Iterar sobre todas las pestañas para asegurar que solo la clickeada quede activa.
-                    tabs.forEach(t => {
-                        // 1. Quitar el estado activo de todas las pestañas
-                        t.classList.remove('active');
-                        // No es necesario añadir o remover clases de Tailwind ya que el CSS .tab-btn maneja el estado inactivo.
-                    });
-
-                    // 2. Aplicar el estado activo a la pestaña clickeada
-                    tab.classList.add('active'); 
-
-                    // 3. Mostrar el contenido correspondiente
-                    tabContents.forEach(content => {
-                        content.classList.remove('active');
-                        if (content.id === target) {
-                            content.classList.add('active');
-                        }
-                    });
+                    setActiveTab(target);
                 });
             });
 
-            // Asegurar que la pestaña activa tenga los estilos correctos al cargar
-            // Este bloque se mantiene para asegurar el estado inicial correcto.
-            const activeTab = document.querySelector('.tab-btn.active');
-            if (activeTab) {
-                // Se eliminan las líneas que manejaban clases Tailwind redundantes
-                activeTab.classList.add('active');
-            }
-
-
+            // Al cargar, aseguramos que 'crm_cases' esté activa si no hay otra activa
+            // Se fuerza la activación de 'crm_cases' como se solicitó
+            setActiveTab('crm_cases');
+            
             renderCharts();
         });
 
@@ -255,7 +294,10 @@
             const aforeYellow = '#FBC104';
             const successGreen = '#10B981'; // Un verde estándar para éxito
             const dangerRed = '#EF4444'; // Un rojo estándar para peligro
+            const darkOrange = '#F97316'; // Naranja oscuro para fallas operacionales
+            const lightBlue = '#60a5fa'; // Azul claro para servicio deficiente
 
+            // --- GRÁFICA 1: Tasa de Contacto ---
             const contactRateCtx = document.getElementById('contactRateChart')?.getContext('2d');
             if (contactRateCtx) {
                 new Chart(contactRateCtx, {
@@ -289,6 +331,7 @@
                 });
             }
 
+            // --- GRÁFICA 2: Tasa de Éxito ---
             const successRateCtx = document.getElementById('successRateChart')?.getContext('2d');
             if (successRateCtx) {
                 new Chart(successRateCtx, {
@@ -322,6 +365,7 @@
                 });
             }
 
+            // --- GRÁFICA 3: Desglose del Esfuerzo Total ---
             const outcomesBarCtx = document.getElementById('outcomesBarChart')?.getContext('2d');
             if (outcomesBarCtx) {
                 new Chart(outcomesBarCtx, {
@@ -378,6 +422,7 @@
                 });
             }
 
+            // --- GRÁFICA 4: Desglose de los Contactos ---
             const contactBreakdownPieCtx = document.getElementById('contactBreakdownPieChart')?.getContext('2d');
             if (contactBreakdownPieCtx) {
                 new Chart(contactBreakdownPieCtx, {
@@ -412,6 +457,59 @@
                             tooltip: {
                                 callbacks: {
                                     label: (context) => `${context.label}: ${context.raw} casos`
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // --- GRÁFICA 5 (ACTUALIZADA): Distribución de Casos CRM por Causa Raíz (Descripción) ---
+            const crmCaseDescriptionCtx = document.getElementById('crmCaseDescriptionChart')?.getContext('2d');
+            if (crmCaseDescriptionCtx) {
+                
+                // Basado en el análisis de la columna 'Descripción'
+                // Tema 1: Fallas Operativas/Logística (3 casos: Espera 6h, no hay personal, cita lejos/módulo incorrecto)
+                // Tema 2: Problemas de Conclusión del Trámite (3 casos: Depósito no recibido, Proceso complicado/largo (esperar 20 días), Falla en Modificación de Datos)
+                // Tema 3: Servicio Deficiente en Retiros (2 casos: Mala atención/asesoría, Asesor grosero durante Retiro)
+
+                const labels = [
+                    'Fallas Operativas / Logística (3)',
+                    'Problemas de Conclusión del Trámite (3)',
+                    'Servicio Deficiente en Retiros (2)'
+                ];
+                const data = [3, 3, 2];
+                const backgroundColors = [
+                    darkOrange,    // Naranja oscuro para Fallas Operativas/Logística (37.5%)
+                    dangerRed,     // Rojo para Problemas de Retiro/Depósito (37.5%) - Alto impacto
+                    lightBlue      // Azul claro para Servicio Deficiente (25.0%) - Menor impacto que el anterior
+                ];
+
+                new Chart(crmCaseDescriptionCtx, {
+                    type: 'pie',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Distribución por Causa Raíz CRM (8)',
+                            data: data,
+                            backgroundColor: backgroundColors,
+                            borderColor: '#ffffff',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    padding: 15
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: (context) => `${context.label}: ${context.raw} casos (${((context.raw / 8) * 100).toFixed(0)}%)`
                                 }
                             }
                         }
